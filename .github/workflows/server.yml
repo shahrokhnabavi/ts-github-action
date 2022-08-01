@@ -1,0 +1,63 @@
+name: Server
+
+on:
+  pull_request:
+    branches:
+      - master
+jobs:
+  dependencies:
+    runs-on: ubuntu-latest
+    name: Install Dependencies
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      - name: Cache node-modules
+        uses: actions/cache@v3
+        env:
+          cache-name: dependency-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
+      - name: Start Installing Dependencies
+        run: |
+          npm install
+
+  code-style:
+    runs-on: ubuntu-latest
+    name: Check Code Style
+    needs: [dependencies]
+    steps:
+      - name: Git Checkout
+        uses: actions/checkout@v3
+      - name: Restore npm cache
+        uses: actions/cache@v3
+        env:
+          cache-name: dependency-cache
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
+      - run: echo "${{ hashFiles('package-lock.json') }}"
+      - name: Lint all scripts
+        run: |
+          npm run lint
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: Unit Tests
+    needs: [dependencies]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Restore npm cache
+      uses: actions/cache@v3
+      env:
+        cache-name: dependency-cache
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }}
+    - name: Run unit tests
+      run: npm run tests:coverage
+    - name: Upload test coverage
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: coverage/lcov.info
