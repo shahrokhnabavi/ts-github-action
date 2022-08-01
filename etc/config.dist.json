@@ -1,0 +1,15 @@
+{
+  "app_port": 8080,
+  "log": {
+    "level": "error"
+  },
+  "db": {
+    "connection": {
+      "host": "localhost",
+      "port": "3306",
+      "username": "root",
+      "password": "",
+      "db_name": "ts-db"
+    }
+  }
+}

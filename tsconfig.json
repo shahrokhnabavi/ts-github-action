@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "esModuleInterop": true,
+    "module": "commonjs",
+    "outDir": "dist",
+    "rootDir": ".",
+    "baseUrl": "./src",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strict": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    "**/*.ts",
+    "etc/config.*.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "etc/config.dist.json"
+  ],
+  "typeRoots": ["node_modules/@types"],
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
+  }
+}

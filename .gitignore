@@ -1,0 +1,11 @@
+node_modules
+.idea
+dist
+tmp
+coverage
+
+.DS_Store
+.vscode
+
+etc/config.*.json
+!etc/config.dist.json
